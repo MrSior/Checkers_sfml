@@ -56,6 +56,27 @@ build CMakeFiles/Checkers.dir/main.cpp.o: CXX_COMPILER__Checkers_Debug /Users/in
   OBJECT_DIR = CMakeFiles/Checkers.dir
   OBJECT_FILE_DIR = CMakeFiles/Checkers.dir
 
+build CMakeFiles/Checkers.dir/AppModel/AppModel.cpp.o: CXX_COMPILER__Checkers_Debug /Users/insembion/Documents/Checkers/AppModel/AppModel.cpp || cmake_object_order_depends_target_Checkers
+  DEP_FILE = CMakeFiles/Checkers.dir/AppModel/AppModel.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -isystem /usr/local/include
+  OBJECT_DIR = CMakeFiles/Checkers.dir
+  OBJECT_FILE_DIR = CMakeFiles/Checkers.dir/AppModel
+
+build CMakeFiles/Checkers.dir/AppRender/AppRender.cpp.o: CXX_COMPILER__Checkers_Debug /Users/insembion/Documents/Checkers/AppRender/AppRender.cpp || cmake_object_order_depends_target_Checkers
+  DEP_FILE = CMakeFiles/Checkers.dir/AppRender/AppRender.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -isystem /usr/local/include
+  OBJECT_DIR = CMakeFiles/Checkers.dir
+  OBJECT_FILE_DIR = CMakeFiles/Checkers.dir/AppRender
+
+build CMakeFiles/Checkers.dir/AppController/AppController.cpp.o: CXX_COMPILER__Checkers_Debug /Users/insembion/Documents/Checkers/AppController/AppController.cpp || cmake_object_order_depends_target_Checkers
+  DEP_FILE = CMakeFiles/Checkers.dir/AppController/AppController.cpp.o.d
+  FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk -std=gnu++17
+  INCLUDES = -isystem /usr/local/include
+  OBJECT_DIR = CMakeFiles/Checkers.dir
+  OBJECT_FILE_DIR = CMakeFiles/Checkers.dir/AppController
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Checkers
@@ -64,7 +85,7 @@ build CMakeFiles/Checkers.dir/main.cpp.o: CXX_COMPILER__Checkers_Debug /Users/in
 #############################################
 # Link the executable Checkers
 
-build Checkers: CXX_EXECUTABLE_LINKER__Checkers_Debug CMakeFiles/Checkers.dir/main.cpp.o | /usr/local/lib/libsfml-graphics.2.5.1.dylib /usr/local/lib/libsfml-audio.2.5.1.dylib /usr/local/lib/libsfml-window.2.5.1.dylib /usr/local/lib/libsfml-system.2.5.1.dylib
+build Checkers: CXX_EXECUTABLE_LINKER__Checkers_Debug CMakeFiles/Checkers.dir/main.cpp.o CMakeFiles/Checkers.dir/AppModel/AppModel.cpp.o CMakeFiles/Checkers.dir/AppRender/AppRender.cpp.o CMakeFiles/Checkers.dir/AppController/AppController.cpp.o | /usr/local/lib/libsfml-graphics.2.5.1.dylib /usr/local/lib/libsfml-audio.2.5.1.dylib /usr/local/lib/libsfml-window.2.5.1.dylib /usr/local/lib/libsfml-system.2.5.1.dylib
   FLAGS = -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX12.3.sdk
   LINK_LIBRARIES = -Wl,-rpath,/usr/local/lib  /usr/local/lib/libsfml-graphics.2.5.1.dylib  /usr/local/lib/libsfml-audio.2.5.1.dylib  /usr/local/lib/libsfml-window.2.5.1.dylib  /usr/local/lib/libsfml-system.2.5.1.dylib
   OBJECT_DIR = CMakeFiles/Checkers.dir

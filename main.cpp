@@ -4,9 +4,10 @@
 #include "AppController/AppController.h"
 
 int main() {
-    AppModel appModel;
-    AppRender appRender(&appModel);
-    AppController appController(&appModel, &appRender);
+    Assets::Instance().Load();
+    auto appModel = new AppModel();
+    auto appRender = new AppRender(appModel);
+    AppController appController(appModel, appRender);
     appController.Run();
     return 0;
 }

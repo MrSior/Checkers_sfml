@@ -24,6 +24,10 @@ void AppController::Run() {
                     m_render->SetSelectedCell({line, column});
                     std::cout << column << line;
                 }
+
+                if (event.mouseButton.button == sf::Mouse::Right) {
+                    m_model->GetPossibleMoves(7, 2);
+                }
             }
         }
 

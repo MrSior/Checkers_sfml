@@ -9,13 +9,14 @@
 #include "memory"
 #include "vector"
 #include "iostream"
+#include "functional"
 
 enum Cell{
     WHITE_PIECE,
     BLACK_PIECE,
     WHITE_KING,
     BLACK_KING,
-    NONE
+    EMPTY
 };
 
 class AppModel {
@@ -30,6 +31,8 @@ public:
 
     const std::vector<std::vector<Cell>>& GetBoard();
     const std::pair<size_t, size_t>& GetBoardSize();
+
+    std::vector<std::pair<size_t, size_t>> GetPossibleMoves(int line, int column);
 };
 
 

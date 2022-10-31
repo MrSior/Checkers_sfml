@@ -57,6 +57,16 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         }
     }
 
+    auto possibleMoves = m_model->GetPossibleMoves((int)selectedCell_.first, (int)selectedCell_.second);
+    for (auto elem : possibleMoves) {
+        sf::CircleShape circleShape;
+        circleShape.setPosition((float)(elem.second * cellSize_ + cellSize_ / 2 - 10),
+                                (float)(elem.first * cellSize_ + cellSize_ / 2 - 10));
+        circleShape.setRadius(10);
+        circleShape.setFillColor({0xDE, 0xB8, 0x41});
+        target.draw(circleShape);
+    }
+
     for (int line = 0; line < board.size(); ++line) {
         for (int column = 0; column < board[line].size(); ++column) {
             if (board[line][column] == BLACK_PIECE){

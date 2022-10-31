@@ -20,7 +20,7 @@ private:
     size_t underBoardOffset_;
     size_t cellSize_;
 
-    std::pair<size_t, size_t> selectedCell_;
+    std::pair<int, int> selectedCell_;
 
     void Init();
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

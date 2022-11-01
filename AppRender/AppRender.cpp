@@ -12,7 +12,6 @@ AppRender::AppRender(AppModel *model) {
 void AppRender::Init() {
     underBoardOffset_ = 100;
     cellSize_ = 128;
-    selectedCell_ = {-1, -1};
     const auto boardSize = m_model->GetBoardSize();
     screenWidth_ = boardSize.second * cellSize_;
     screenHeight_ = boardSize.first * cellSize_ + underBoardOffset_;
@@ -29,6 +28,7 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     states.transform *= getTransform();
 
     const auto board = m_model->GetBoard();
+    const auto selectedCell = m_model->GetSelectedCell();
 
     for (size_t line = 0; line < screenHeight_ - underBoardOffset_; line += cellSize_) {
         for(size_t column = 0; column < screenWidth_; column += cellSize_) {
@@ -48,7 +48,9 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
                     cellColor = {0x6C, 0x75, 0x7D};
                 }
             }
-            if (line / cellSize_ == selectedCell_.first && column / cellSize_ == selectedCell_.second) {
+            if (m_model->GetIsCellSelected()
+                && line / cellSize_ == selectedCell.first
+                && column / cellSize_ == selectedCell.second) {
                 cell.setFillColor({0xDE, 0xB8, 0x41});
             } else {
                 cell.setFillColor(cellColor);
@@ -57,14 +59,16 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         }
     }
 
-    auto possibleMoves = m_model->GetPossibleMoves((int)selectedCell_.first, (int)selectedCell_.second);
-    for (auto elem : possibleMoves) {
-        sf::CircleShape circleShape;
-        circleShape.setPosition((float)(elem.second * cellSize_ + cellSize_ / 2 - 10),
-                                (float)(elem.first * cellSize_ + cellSize_ / 2 - 10));
-        circleShape.setRadius(10);
-        circleShape.setFillColor({0xDE, 0xB8, 0x41});
-        target.draw(circleShape);
+    if (m_model->GetIsCellSelected()) {
+        const auto possibleMoves = m_model->GetSelectedCellPossibleMoves();
+        for (auto elem: possibleMoves) {
+            sf::CircleShape circleShape;
+            circleShape.setPosition((float) (elem.second * cellSize_ + cellSize_ / 2 - 10),
+                                    (float) (elem.first * cellSize_ + cellSize_ / 2 - 10));
+            circleShape.setRadius(10);
+            circleShape.setFillColor({0xDE, 0xB8, 0x41});
+            target.draw(circleShape);
+        }
     }
 
     for (int line = 0; line < board.size(); ++line) {
@@ -85,8 +89,3 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     }
 }
 
-void AppRender::SetSelectedCell(std::pair<size_t, size_t> cell) {
-    const auto board = m_model->GetBoard();
-    if (board[cell.first][cell.second] != WHITE_PIECE) return;
-    selectedCell_ = cell;
-}

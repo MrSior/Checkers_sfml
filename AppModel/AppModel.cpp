@@ -12,6 +12,9 @@ AppModel::AppModel() {
 void AppModel::Init() {
     boardSize_ = {8, 8};
     board_.assign(boardSize_.first, std::vector<Cell>(boardSize_.second, EMPTY));
+    selectedCell_ = {-1, -1};
+    isCellSelected_ = false;
+
 
     board_[7][2] = WHITE_PIECE;
     board_[6][1] = BLACK_PIECE;
@@ -66,7 +69,7 @@ std::vector<std::pair<size_t, size_t>> AppModel::GetPossibleMoves(int line, int 
             }
     };
 
-    std::function<std::vector<std::pair<size_t, size_t>>(int, int)> GetAttackingLine =
+    auto GetAttackingLine =
             [&](int i, int j) -> std::vector<std::pair<size_t, size_t>> {
                 if (i < 0 || i >= boardSize_.first) {
                     return {};
@@ -76,39 +79,17 @@ std::vector<std::pair<size_t, size_t>> AppModel::GetPossibleMoves(int line, int 
                 }
                 std::vector<std::pair<size_t, size_t>> res;
                 if (isEnemy(i - 1, j - 1)) {
-                    auto pieceType = board_[i - 1][j - 1];
-                    board_[i - 1][j - 1] = EMPTY;
-                    res = GetAttackingLine(i - 2, j - 2);
-                    board_[i - 1][j - 1] = pieceType;
+                    res.emplace_back(i - 2, j - 2);
                 }
                 if (isEnemy(i - 1, j + 1)){
-                    auto pieceType = board_[i - 1][j + 1];
-                    board_[i - 1][j + 1] = EMPTY;
-                    auto tmp = GetAttackingLine(i - 2, j + 2);
-                    for (auto elem : tmp) {
-                        res.emplace_back(elem);
-                    }
-                    board_[i - 1][j + 1] = pieceType;
+                    res.emplace_back(i - 2, j + 2);
                 }
                 if (isEnemy(i + 1, j - 1)){
-                    auto pieceType = board_[i + 1][j - 1];
-                    board_[i + 1][j - 1] = EMPTY;
-                    auto tmp = GetAttackingLine(i + 2, j - 2);
-                    for (auto elem : tmp) {
-                        res.emplace_back(elem);
-                    }
-                    board_[i + 1][j - 1] = pieceType;
+                    res.emplace_back(i + 2, j - 2);
                 }
                 if (isEnemy(i + 1, j + 1)){
-                    auto pieceType = board_[i + 1][j + 1];
-                    board_[i + 1][j + 1] = EMPTY;
-                    auto tmp = GetAttackingLine(i + 2, j + 2);
-                    for (auto elem : tmp) {
-                        res.emplace_back(elem);
-                    }
-                    board_[i + 1][j + 1] = pieceType;
+                    res.emplace_back(i + 2, j + 2);
                 }
-                res.emplace_back(i, j);
                 return res;
     };
 
@@ -118,8 +99,7 @@ std::vector<std::pair<size_t, size_t>> AppModel::GetPossibleMoves(int line, int 
     if (board_[line][column] == BLACK_PIECE || board_[line][column] == BLACK_KING) return {};
 
     auto res = GetAttackingLine(line, column);
-    if (res.size() > 1) {
-        res.pop_back();
+    if (!res.empty()) {
         return res;
     }
     res.pop_back();
@@ -130,4 +110,42 @@ std::vector<std::pair<size_t, size_t>> AppModel::GetPossibleMoves(int line, int 
         res.emplace_back(line - 1, column + 1);
     }
     return res;
+}
+
+void AppModel::SetSelectedCell(std::pair<size_t, size_t> cell) {
+    if (board_[cell.first][cell.second] != WHITE_PIECE) return;
+    selectedCell_ = cell;
+    selectedCellPossibleMoves_ = GetPossibleMoves(selectedCell_.first, selectedCell_.second);
+    isCellSelected_ = true;
+}
+
+const std::pair<int, int> &AppModel::GetSelectedCell() {
+    return selectedCell_;
+}
+
+const std::vector<std::pair<size_t, size_t>> &AppModel::GetSelectedCellPossibleMoves() {
+    return selectedCellPossibleMoves_;
+}
+
+bool AppModel::GetIsCellSelected() const {
+    return isCellSelected_;
+}
+
+bool AppModel::CheckIsPossibleMove(std::pair<size_t, size_t> cell) {
+    return std::find(selectedCellPossibleMoves_.begin(),
+                     selectedCellPossibleMoves_.end(),
+                     cell) != selectedCellPossibleMoves_.end();
+}
+
+void AppModel::Move(std::pair<size_t, size_t> cell) {
+    std::swap(board_[selectedCell_.first][selectedCell_.second],
+              board_[cell.first][cell.second]);
+
+    if (abs((int)cell.first - (int)selectedCell_.first) > 1) {
+        std::pair<size_t, size_t> betweenCell(selectedCell_.first + ((int)cell.first - (int)selectedCell_.first) / 2,
+                                              selectedCell_.second + ((int)cell.second - (int)selectedCell_.second) / 2);
+        board_[betweenCell.first][betweenCell.second] = EMPTY;
+    }
+    isCellSelected_ = false;
+    selectedCellPossibleMoves_.clear();
 }

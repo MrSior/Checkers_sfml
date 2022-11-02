@@ -73,18 +73,25 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 
     for (int line = 0; line < board.size(); ++line) {
         for (int column = 0; column < board[line].size(); ++column) {
-            if (board[line][column] == BLACK_PIECE){
-                sf::Sprite sprite;
-                sprite.setTexture(Assets::Instance().blackPieceT);
-                sprite.setPosition(sf::Vector2f((float)column * (float)cellSize_ + 9, (float)line * (float)cellSize_ + 9));
-                target.draw(sprite);
+            sf::Sprite sprite;
+            switch (board[line][column]) {
+                case BLACK_PIECE:
+                    sprite.setTexture(Assets::Instance().blackPieceT);
+                    break;
+                case WHITE_PIECE:
+                    sprite.setTexture(Assets::Instance().whitePieceT);
+                    break;
+                case WHITE_KING:
+                    sprite.setTexture(Assets::Instance().whiteKingT);
+                    break;
+                case BLACK_KING:
+                    sprite.setTexture(Assets::Instance().blackKingT);
+                    break;
+                case EMPTY:
+                    break;
             }
-            if (board[line][column] == WHITE_PIECE){
-                sf::Sprite sprite;
-                sprite.setTexture(Assets::Instance().whitePieceT);
-                sprite.setPosition(sf::Vector2f((float)column * (float)cellSize_ + 9, (float)line * (float)cellSize_ + 9));
-                target.draw(sprite);
-            }
+            sprite.setPosition(sf::Vector2f((float)column * (float)cellSize_ + 9, (float)line * (float)cellSize_ + 9));
+            target.draw(sprite);
         }
     }
 }

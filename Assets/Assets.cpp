@@ -7,4 +7,6 @@
 void Assets::Load() {
     blackPieceT.loadFromFile("../Assets/Sprites/EnemyMenRand.png");
     whitePieceT.loadFromFile("../Assets/Sprites/PlayerMen.png");
+    whiteKingT.loadFromFile("../Assets/Sprites/quineWhite.png");
+    blackKingT.loadFromFile("../Assets/Sprites/quine(2).png");
 }

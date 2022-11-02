@@ -11,6 +11,8 @@ class Assets {
 public:
     sf::Texture blackPieceT;
     sf::Texture whitePieceT;
+    sf::Texture blackKingT;
+    sf::Texture whiteKingT;
 
     static Assets& Instance()
     {

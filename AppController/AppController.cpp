@@ -33,7 +33,11 @@ void AppController::Run() {
                 }
             }
         }
-
         m_render->Render();
+
+        if (!m_model->GetIsPlayerTurn()){
+            sf::sleep(sf::milliseconds(250));
+            m_model->BotsMove();
+        }
     }
 }

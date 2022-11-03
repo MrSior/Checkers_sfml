@@ -18,16 +18,20 @@ class Board {
 private:
     std::vector<std::vector<Cell>> board_;
     std::pair<size_t, size_t> boardSize_;
-    std::vector<std::pair<size_t, size_t>> possibleMoves_;
+    std::vector<std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>>> possibleMoves_;
     bool isShouldAttack_;
 
     void CountPossibleMoves();
     void CheckIsShouldAttack();
+    void CheckNewKing();
 public:
     Board();
+    Board(Board& board);
 
     bool isPieceWhite(std::pair<size_t, size_t> cell) const;
     void Move(std::pair<size_t, size_t> cell, std::pair<size_t, size_t> new_position);
+    void SwapColor();
+
     std::vector<std::pair<size_t, size_t>> GetCellPossibleMoves(std::pair<size_t, size_t> cell, bool* isShouldAttack = nullptr);
     const auto& GetBoard() { return board_;};
     const auto& GetBoardSize() {return boardSize_;};

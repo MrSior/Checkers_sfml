@@ -6,10 +6,12 @@
 #define CHECKERS_IBOT_H
 
 #include "vector"
+#include "../../Board/Board.h"
 
 class IBot {
 public:
-    virtual void MakeMove(std::vector<std::vector<int>>& board) = 0;
+    virtual std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> Move(Board board) = 0;
+    virtual bool IsShouldAttack(Board board) = 0;
 };
 
 

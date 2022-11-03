@@ -4,6 +4,6 @@
 
 #include "BotBeginner.h"
 
-void BotBeginner::MakeMove(std::vector<std::vector<int>> &board) {
-
-}
+//void BotBeginner::MakeMove(std::vector<std::vector<int>> &board) {
+//
+//}

@@ -6,14 +6,19 @@
 #define CHECKERS_BOTMANAGER_H
 
 #include "Bot/IBot.h"
+#include "Bot/BotRand/BotRand.h"
+#include "../Board/Board.h"
 #include "memory"
+#include "iostream"
 
 class BotManager {
 private:
-    std::shared_ptr<IBot> bot_;
+    IBot* bot_;
 public:
+    BotManager();
 
-    void Make_bots_move(std::vector<std::vector<int>>& board);
+    std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> GetBotsMove(Board board);
+    bool GetIsShouldAttack(Board board);
 };
 
 

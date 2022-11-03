@@ -11,7 +11,7 @@ class BotBeginner : IBot {
 private:
 
 public:
-    void MakeMove(std::vector<std::vector<int>>& board) override;
+//    void MakeMove(std::vector<std::vector<int>>& board) override;
 };
 
 

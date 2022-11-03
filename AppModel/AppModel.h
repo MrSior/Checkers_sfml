@@ -14,7 +14,7 @@
 
 class AppModel {
 private:
-    std::shared_ptr<BotManager> bot_manager_;
+    std::shared_ptr<BotManager> botManager_;
     Board board_;
 
     std::pair<size_t, size_t> selectedCell_;
@@ -38,6 +38,7 @@ public:
     bool CheckIsPossibleMove(std::pair<size_t, size_t> cell);
     void Move(std::pair<size_t, size_t> cell);
     bool isPieceWhite(std::pair<size_t, size_t> cell) const;
+    void BotsMove();
 
 };
 

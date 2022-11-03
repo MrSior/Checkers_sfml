@@ -9,24 +9,32 @@ Board::Board() {
     board_.assign(boardSize_.first, std::vector<Cell>(boardSize_.second, EMPTY));
     isShouldAttack_ = false;
 
-//    for (size_t line = 0; line < boardSize_.first; ++line) {
-//        if (line >= 3 && line < boardSize_.first - 3) continue;
-//        size_t start_ind = (line + 1) % 2;
-//        for (size_t column = start_ind; column < boardSize_.second; column += 2) {
-//            if (line < 3) {
-//                board_[line][column] = BLACK_PIECE;
-//            } else {
-//                board_[line][column] = WHITE_PIECE;
-//            }
-//        }
-//    }
+    for (size_t line = 0; line < boardSize_.first; ++line) {
+        if (line >= 3 && line < boardSize_.first - 3) continue;
+        size_t start_ind = (line + 1) % 2;
+        for (size_t column = start_ind; column < boardSize_.second; column += 2) {
+            if (line < 3) {
+                board_[line][column] = BLACK_PIECE;
+            } else {
+                board_[line][column] = WHITE_PIECE;
+            }
+        }
+    }
 
-    board_[7][2] = WHITE_KING;
-    board_[1][2] = WHITE_PIECE;
-    board_[6][1] = BLACK_PIECE;
-    board_[6][3] = BLACK_PIECE;
-    board_[4][1] = BLACK_PIECE;
-    board_[4][3] = BLACK_PIECE;
+//    board_[7][2] = WHITE_KING;
+//    board_[1][2] = WHITE_PIECE;
+//    board_[6][1] = BLACK_PIECE;
+//    board_[6][3] = BLACK_PIECE;
+//    board_[4][1] = BLACK_PIECE;
+//    board_[4][3] = BLACK_PIECE;
+
+//    board_[6][1] = WHITE_PIECE;
+//    board_[5][0] = BLACK_PIECE;
+//    board_[7][4] = WHITE_PIECE;
+
+//    board_[1][2] = BLACK_PIECE;
+//    board_[3][2] = WHITE_PIECE;
+//    board_[4][5] = WHITE_PIECE;
 
     CountPossibleMoves();
 }
@@ -45,7 +53,7 @@ void Board::CountPossibleMoves() {
                 }
                 if (isShouldAttack == isShouldAttack_) {
                     for (auto elem: res) {
-                        possibleMoves_.emplace_back(elem);
+                        possibleMoves_.push_back({{line, column}, elem});
                     }
                 }
             }
@@ -69,7 +77,8 @@ void Board::CheckIsShouldAttack() {
     isShouldAttack_ = false;
 }
 
-std::vector<std::pair<size_t, size_t>> Board::GetCellPossibleMoves(std::pair<size_t, size_t> cell, bool *isShouldAttack) {
+std::vector<std::pair<size_t, size_t>>
+Board::GetCellPossibleMoves(std::pair<size_t, size_t> cell, bool *isShouldAttack) {
     auto isEmpty{
             [&](int i, int j) {
                 if (i < 0 || i >= boardSize_.first) {
@@ -110,12 +119,12 @@ std::vector<std::pair<size_t, size_t>> Board::GetCellPossibleMoves(std::pair<siz
                     if (isEnemy(i - 1, j + 1) && isEmpty(i - 2, j + 2)) {
                         res.emplace_back(i - 2, j + 2);
                     }
-//                    if (isEnemy(i + 1, j - 1) && isEmpty(i + 2, j - 2)) {
-//                        res.emplace_back(i + 2, j - 2);
-//                    }
-//                    if (isEnemy(i + 1, j + 1) && isEmpty(i + 2, j + 2)) {
-//                        res.emplace_back(i + 2, j + 2);
-//                    }
+                    if (isEnemy(i + 1, j - 1) && isEmpty(i + 2, j - 2)) {
+                        res.emplace_back(i + 2, j - 2);
+                    }
+                    if (isEnemy(i + 1, j + 1) && isEmpty(i + 2, j + 2)) {
+                        res.emplace_back(i + 2, j + 2);
+                    }
                     return res;
                 }
                 auto CheckDiagonal =
@@ -125,8 +134,15 @@ std::vector<std::pair<size_t, size_t>> Board::GetCellPossibleMoves(std::pair<siz
                                 if (isEnemy(cell.first, cell.second)
                                     && isEmpty(cell.first + direction.first,
                                                cell.second + direction.second)) {
-                                    res.emplace_back(cell.first + direction.first,
-                                                     cell.second + direction.second);
+                                    cell.first += direction.first;
+                                    cell.second += direction.second;
+                                    while (isEmpty(cell.first, cell.second)) {
+                                        res.emplace_back(cell.first, cell.second);
+                                        cell.first += direction.first;
+                                        cell.second += direction.second;
+                                    }
+//                                    res.emplace_back(cell.first + direction.first,
+//                                                     cell.second + direction.second);
                                     break;
                                 }
                                 cell.first += direction.first;
@@ -192,6 +208,42 @@ void Board::Move(std::pair<size_t, size_t> cell, std::pair<size_t, size_t> new_p
          _cell.first += direction.first, _cell.second += direction.second) {
         board_[_cell.first][_cell.second] = EMPTY;
     }
-
+    CheckNewKing();
     CountPossibleMoves();
+}
+
+Board::Board(Board &board) {
+    boardSize_ = board.boardSize_;
+    possibleMoves_ = board.possibleMoves_;
+    board_ = board.board_;
+    isShouldAttack_ = board.isShouldAttack_;
+}
+
+void Board::SwapColor() {
+    for (auto &line: board_) {
+        for (auto &elem: line) {
+            if (elem == WHITE_PIECE) {
+                elem = BLACK_PIECE;
+            } else if (elem == BLACK_PIECE) {
+                elem = WHITE_PIECE;
+            } else if (elem == WHITE_KING) {
+                elem = BLACK_KING;
+            } else if (elem == BLACK_KING) {
+                elem = WHITE_KING;
+            }
+        }
+    }
+    std::reverse(board_.begin(), board_.end());
+    CountPossibleMoves();
+}
+
+void Board::CheckNewKing() {
+    for (int column = 0; column < boardSize_.second; ++column) {
+        if (board_[0][column] == WHITE_PIECE) {
+            board_[0][column] = WHITE_KING;
+        }
+        if (board_[boardSize_.first - 1][column] == BLACK_PIECE) {
+            board_[boardSize_.first - 1][column] = BLACK_KING;
+        }
+    }
 }

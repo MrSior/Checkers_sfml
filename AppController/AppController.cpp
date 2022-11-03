@@ -21,11 +21,13 @@ void AppController::Run() {
                     auto mousePosition = sf::Mouse::getPosition(m_render->window());
                     size_t line = mousePosition.y / m_render->GetCellSize();
                     size_t column = mousePosition.x / m_render->GetCellSize();
-                    if (!m_model->GetIsCellSelected() || m_model->isPieceWhite({line, column})) {
-                        m_model->SetSelectedCell({line, column});
-                    } else {
-                        if (m_model->CheckIsPossibleMove({line, column})) {
-                            m_model->Move({line, column});
+                    if(m_model->GetIsPlayerTurn()) {
+                        if (!m_model->GetIsCellSelected() || m_model->isPieceWhite({line, column})) {
+                            m_model->SetSelectedCell({line, column});
+                        } else {
+                            if (m_model->CheckIsPossibleMove({line, column})) {
+                                m_model->Move({line, column});
+                            }
                         }
                     }
                 }

@@ -10,31 +10,18 @@
 #include "vector"
 #include "iostream"
 #include "functional"
-
-enum Cell{
-    WHITE_PIECE,
-    BLACK_PIECE,
-    WHITE_KING,
-    BLACK_KING,
-    EMPTY
-};
+#include "Board/Board.h"
 
 class AppModel {
 private:
     std::shared_ptr<BotManager> bot_manager_;
-
-    std::vector<std::vector<Cell>> board_;
-    std::pair<size_t, size_t> boardSize_;
+    Board board_;
 
     std::pair<size_t, size_t> selectedCell_;
     std::vector<std::pair<size_t, size_t>> selectedCellPossibleMoves_;
-    std::vector<std::pair<size_t, size_t>> possibleMoves_;
 
     bool isCellSelected_;
-    bool isShouldAttack_;
-
-    void CountPossibleMoves();
-    void CheckIsShouldAttack();
+    bool isPLayerTurn;
 public:
     AppModel();
     void Init();
@@ -44,14 +31,14 @@ public:
     const std::vector<std::vector<Cell>>& GetBoard();
     const std::pair<size_t, size_t>& GetBoardSize();
     const std::pair<size_t, size_t>& GetSelectedCell();
-    const std::vector<std::pair<size_t, size_t>>& GetSelectedCellPossibleMoves();
+    const auto& GetSelectedCellPossibleMoves() {return selectedCellPossibleMoves_;};
     bool GetIsCellSelected() const;
+    bool GetIsPlayerTurn() const {return isPLayerTurn;};
 
-    std::vector<std::pair<size_t, size_t>> GetPossibleMoves(std::pair<size_t, size_t> cell, bool* isShouldAttack = nullptr);
     bool CheckIsPossibleMove(std::pair<size_t, size_t> cell);
     void Move(std::pair<size_t, size_t> cell);
     bool isPieceWhite(std::pair<size_t, size_t> cell) const;
-    bool GetIsShouldAttack();
+
 };
 
 

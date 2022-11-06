@@ -27,16 +27,16 @@ public:
         this->board = board;
         this->move = move;
         this->parent = parent;
-        this->isWhiteMove = isWhiteMove;
+        this->isWhiteMove;
         value = 0;
     }
 };
 
 class BotGrandmaster : public IBot {
 
-    void BuildTree(Node* node);
+    void BuildTree(Node* node, int depth = 0);
     int EvaluatePosition(const Board& board);
-    void dfs(Node* node);
+    void dfs(Node* node, bool isMin);
 public:
     std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> Move(Board board) override;
     bool IsShouldAttack(Board board) override;

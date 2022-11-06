@@ -5,11 +5,11 @@
 #include "BotGrandmaster.h"
 
 std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> BotGrandmaster::Move(Board board) {
-    int val = EvaluatePosition(board);
+    //int val = EvaluatePosition(board);
     Node *node = new Node;
     node->board = board;
     BuildTree(node);
-    dfs(node);
+    dfs(node, true);
     int min = INT_MAX;
     std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> move;
     for (auto &child: node->children) {
@@ -86,41 +86,52 @@ int BotGrandmaster::EvaluatePosition(const Board &board) {
         }
     }
 
-//    for (auto move: board.GetPossibleMoves()) {
-//        auto tmpBoard = board;
-//        tmpBoard.Move(move.first, move.second);
-//        tmpBoard.SwapColor();
-//        int res = CountPiecesOpponentCanTake(tmpBoard);
-//        piecesOpponentCanTake += res > piecesOpponentCanTake;
-//    }
+    int piecesAtBoarders = 0;
+    for (int line = 0; line < board.GetBoardSize().first; ++line) {
+        piecesAtBoarders += board.isPieceWhite({line, 0});
+        piecesAtBoarders += board.isPieceWhite({line, board.GetBoardSize().second - 1});
+    }
 
     return pawnPiecesNum * 8 + kingPiecesNum * 16 + piecesIn2MidLinesNotIn4MidColumns * 3
            + piecesIn2MidLines4MidColumns * 4 + piecesBackLine * 2 - piecesOpponentCanTake * 6
-           + protectedPieces * 6;
+           + protectedPieces * 6 + piecesAtBoarders * 2;
 }
 
-void BotGrandmaster::BuildTree(Node *node) {
+void BotGrandmaster::BuildTree(Node *node, int depth) {
+    if (depth > 3) return;
     for (auto move: node->board.GetPossibleMoves()) {
         auto tmpBoard = node->board;
         tmpBoard.Move(move.first, move.second);
         Node *child = new Node(tmpBoard, move, node);
-        if (node->board.GetIsShouldAttack() && child->board.GetIsShouldAttack()) {
-            BuildTree(child);
+        while (tmpBoard.GetIsShouldAttack()) {
+            tmpBoard.Move(tmpBoard.GetPossibleMoves().front().first, tmpBoard.GetPossibleMoves().front().second);
+            child->board = tmpBoard;
         }
+        child->board.SwapColor();
+        BuildTree(child, depth + 1);
         node->children.push_back(child);
     }
 }
 
-void BotGrandmaster::dfs(Node *node) {
+void BotGrandmaster::dfs(Node *node, bool isMin) {
     if (node == nullptr) return;
     if (node->children.empty()) {
         node->value = EvaluatePosition(node->board);
         return;
     }
-    int min = INT_MAX;
-    for (auto &ind: node->children) {
-        dfs(ind);
-        min = std::min(min, ind->value);
+    if (isMin) {
+        int min = INT_MAX;
+        for (auto &ind: node->children) {
+            dfs(ind, false);
+            min = std::min(min, ind->value);
+        }
+        node->value = min;
+        return;
     }
-    node->value = min;
+    int max = INT_MIN;
+    for (auto &ind: node->children) {
+        dfs(ind, true);
+        max = std::max(max, ind->value);
+    }
+    node->value = max;
 }

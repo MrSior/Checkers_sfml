@@ -15,7 +15,8 @@ std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> BotManager::GetB
 }
 
 BotManager::BotManager() {
-    bot_ = new BotRand();
+    //bot_ = new BotRand();
+    bot_ = new BotGrandmaster();
 }
 
 bool BotManager::GetIsShouldAttack(Board board) {

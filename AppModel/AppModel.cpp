@@ -66,3 +66,7 @@ void AppModel::BotsMove() {
     board_.Move(move.first, move.second);
     isPLayerTurn = !(botManager_->GetIsShouldAttack(board_) && isBotShouldAttack);
 }
+
+bool AppModel::IsPlayerWon() {
+    return board_.isWhiteWon();
+}

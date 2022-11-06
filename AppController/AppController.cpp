@@ -21,7 +21,7 @@ void AppController::Run() {
                     auto mousePosition = sf::Mouse::getPosition(m_render->window());
                     size_t line = mousePosition.y / m_render->GetCellSize();
                     size_t column = mousePosition.x / m_render->GetCellSize();
-                    if(m_model->GetIsPlayerTurn()) {
+                    if(m_model->GetIsPlayerTurn() && !m_model->IsPlayerWon()) {
                         if (!m_model->GetIsCellSelected() || m_model->isPieceWhite({line, column})) {
                             m_model->SetSelectedCell({line, column});
                         } else {
@@ -35,7 +35,7 @@ void AppController::Run() {
         }
         m_render->Render();
 
-        if (!m_model->GetIsPlayerTurn()){
+        if (!m_model->GetIsPlayerTurn() && !m_model->IsPlayerWon()){
             sf::sleep(sf::milliseconds(250));
             m_model->BotsMove();
         }

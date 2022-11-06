@@ -39,7 +39,7 @@ public:
     void Move(std::pair<size_t, size_t> cell);
     bool isPieceWhite(std::pair<size_t, size_t> cell) const;
     void BotsMove();
-
+    bool IsPlayerWon();
 };
 
 

@@ -7,6 +7,7 @@
 
 #include "Bot/IBot.h"
 #include "Bot/BotRand/BotRand.h"
+#include "Bot/BotGrandmaster/BotGrandmaster.h"
 #include "../Board/Board.h"
 #include "memory"
 #include "iostream"

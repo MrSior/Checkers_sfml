@@ -21,6 +21,16 @@ Board::Board() {
         }
     }
 
+//    board_[2][1] = EMPTY;
+//    board_[2][3] = EMPTY;
+//    board_[3][2] = BLACK_PIECE;
+//    board_[4][1] = EMPTY;
+//    board_[5][2] = WHITE_PIECE;
+//    board_[4][5] = WHITE_PIECE;
+////    board_[5][2] = EMPTY;
+//    board_[5][4] = EMPTY;
+//    board_[6][3] = EMPTY;
+
 //    board_[7][2] = WHITE_KING;
 //    board_[1][2] = WHITE_PIECE;
 //    board_[6][1] = BLACK_PIECE;
@@ -134,15 +144,15 @@ Board::GetCellPossibleMoves(std::pair<size_t, size_t> cell, bool *isShouldAttack
                                 if (isEnemy(cell.first, cell.second)
                                     && isEmpty(cell.first + direction.first,
                                                cell.second + direction.second)) {
-                                    cell.first += direction.first;
-                                    cell.second += direction.second;
-                                    while (isEmpty(cell.first, cell.second)) {
-                                        res.emplace_back(cell.first, cell.second);
-                                        cell.first += direction.first;
-                                        cell.second += direction.second;
-                                    }
-//                                    res.emplace_back(cell.first + direction.first,
-//                                                     cell.second + direction.second);
+//                                    cell.first += direction.first;
+//                                    cell.second += direction.second;
+//                                    while (isEmpty(cell.first, cell.second)) {
+//                                        res.emplace_back(cell.first, cell.second);
+//                                        cell.first += direction.first;
+//                                        cell.second += direction.second;
+//                                    }
+                                    res.emplace_back(cell.first + direction.first,
+                                                     cell.second + direction.second);
                                     break;
                                 }
                                 cell.first += direction.first;
@@ -246,4 +256,32 @@ void Board::CheckNewKing() {
             board_[boardSize_.first - 1][column] = BLACK_KING;
         }
     }
+}
+
+bool Board::isWhiteWon() {
+    for (const auto& line : board_) {
+        for (auto elem : line) {
+            if (elem == WHITE_PIECE) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+int Board::GetNumberPieces(Cell type) const {
+    int cnt = 0;
+    for (auto& line : board_) {
+        for(auto elem : line) {
+            cnt += elem == type;
+        }
+    }
+    return cnt;
+}
+
+Board::Board(const Board &board) {
+    boardSize_ = board.boardSize_;
+    possibleMoves_ = board.possibleMoves_;
+    board_ = board.board_;
+    isShouldAttack_ = board.isShouldAttack_;
 }

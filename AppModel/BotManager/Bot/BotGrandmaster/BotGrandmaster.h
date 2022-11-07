@@ -40,6 +40,7 @@ class BotGrandmaster : public IBot {
 public:
     std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> Move(Board board) override;
     bool IsShouldAttack(Board board) override;
+    int GetBotType() override;
 };
 
 

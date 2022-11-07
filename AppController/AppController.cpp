@@ -32,6 +32,20 @@ void AppController::Run() {
                     }
                 }
             }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Num1) {
+                    m_model->SwitchBot(0);
+                }
+                if (event.key.code == sf::Keyboard::Num2) {
+                    //m_model->SwitchBot(1);
+                }
+                if (event.key.code == sf::Keyboard::Num3) {
+                    m_model->SwitchBot(2);
+                }
+                if (event.key.code == sf::Keyboard::R) {
+                    m_model->Init();
+                }
+            }
         }
         m_render->Render();
 

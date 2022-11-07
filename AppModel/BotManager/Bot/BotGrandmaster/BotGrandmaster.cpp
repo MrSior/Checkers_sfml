@@ -135,3 +135,7 @@ void BotGrandmaster::dfs(Node *node, bool isMin) {
     }
     node->value = max;
 }
+
+int BotGrandmaster::GetBotType() {
+    return 2;
+}

@@ -12,6 +12,7 @@ class IBot {
 public:
     virtual std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> Move(Board board) = 0;
     virtual bool IsShouldAttack(Board board) = 0;
+    virtual int GetBotType() = 0;
 };
 
 

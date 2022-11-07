@@ -76,7 +76,13 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
             sf::Sprite sprite;
             switch (board[line][column]) {
                 case BLACK_PIECE:
-                    sprite.setTexture(Assets::Instance().blackPieceT);
+                    if (m_model->GetBotType() == 0) {
+                        sprite.setTexture(Assets::Instance().blackPieceRandT);
+                    } else if (m_model->GetBotType() == 1) {
+                        sprite.setTexture(Assets::Instance().blackPieceBeginnerT);
+                    } else if (m_model->GetBotType() == 2) {
+                        sprite.setTexture(Assets::Instance().blackPieceGrandmasterT);
+                    }
                     break;
                 case WHITE_PIECE:
                     sprite.setTexture(Assets::Instance().whitePieceT);
@@ -85,7 +91,13 @@ void AppRender::draw(sf::RenderTarget &target, sf::RenderStates states) const {
                     sprite.setTexture(Assets::Instance().whiteKingT);
                     break;
                 case BLACK_KING:
-                    sprite.setTexture(Assets::Instance().blackKingT);
+                    if (m_model->GetBotType() == 0) {
+                        sprite.setTexture(Assets::Instance().blackKingRandT);
+                    } else if (m_model->GetBotType() == 1) {
+                        sprite.setTexture(Assets::Instance().blackKingBeginnerT);
+                    } else if (m_model->GetBotType() == 2) {
+                        sprite.setTexture(Assets::Instance().blackKingGrandmasterT);
+                    }
                     break;
                 case EMPTY:
                     break;

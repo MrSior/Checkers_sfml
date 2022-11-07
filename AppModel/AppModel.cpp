@@ -13,6 +13,7 @@ void AppModel::Init() {
     selectedCell_ = {-1, -1};
     isCellSelected_ = false;
     isPLayerTurn = true;
+    board_ = Board();
 }
 
 const std::vector<std::vector<Cell>> &AppModel::GetBoard() {
@@ -69,4 +70,12 @@ void AppModel::BotsMove() {
 
 bool AppModel::IsPlayerWon() {
     return board_.isWhiteWon();
+}
+
+int AppModel::GetBotType() {
+    return botManager_->GetBotType();
+}
+
+void AppModel::SwitchBot(int num) {
+    botManager_->SetBot(num);
 }

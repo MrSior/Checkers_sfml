@@ -20,6 +20,8 @@ public:
 
     std::pair<std::pair<size_t, size_t>, std::pair<size_t, size_t>> GetBotsMove(Board board);
     bool GetIsShouldAttack(Board board);
+    void SetBot(int num);
+    int GetBotType();
 };
 
 

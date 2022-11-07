@@ -24,3 +24,17 @@ bool BotManager::GetIsShouldAttack(Board board) {
     return bot_->IsShouldAttack(board);
 }
 
+void BotManager::SetBot(int num) {
+    if (num == 0){
+        bot_ = new BotRand();
+    } else if (num == 1) {
+
+    } else if (num == 2) {
+        bot_ = new BotGrandmaster();
+    }
+}
+
+int BotManager::GetBotType() {
+    return bot_->GetBotType();
+}
+

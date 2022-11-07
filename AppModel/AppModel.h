@@ -40,6 +40,8 @@ public:
     bool isPieceWhite(std::pair<size_t, size_t> cell) const;
     void BotsMove();
     bool IsPlayerWon();
+    void SwitchBot(int num);
+    int GetBotType();
 };
 
 

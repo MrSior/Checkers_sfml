@@ -5,8 +5,12 @@
 #include "Assets.h"
 
 void Assets::Load() {
-    blackPieceT.loadFromFile("../Assets/Sprites/EnemyMenRand.png");
+    blackPieceRandT.loadFromFile("../Assets/Sprites/EnemyMenRand.png");
+    blackPieceBeginnerT.loadFromFile("../Assets/Sprites/EnemyMenNewer.png");
+    blackPieceGrandmasterT.loadFromFile("../Assets/Sprites/EnemyMenPro.png");
     whitePieceT.loadFromFile("../Assets/Sprites/PlayerMen.png");
     whiteKingT.loadFromFile("../Assets/Sprites/quineWhite.png");
-    blackKingT.loadFromFile("../Assets/Sprites/quine(2).png");
+    blackKingRandT.loadFromFile("../Assets/Sprites/quine(2).png");
+    blackKingBeginnerT.loadFromFile("../Assets/Sprites/quine(1).png");
+    blackKingGrandmasterT.loadFromFile("../Assets/Sprites/quine.png");
 }

@@ -9,9 +9,13 @@
 
 class Assets {
 public:
-    sf::Texture blackPieceT;
+    sf::Texture blackPieceRandT;
+    sf::Texture blackPieceBeginnerT;
+    sf::Texture blackPieceGrandmasterT;
     sf::Texture whitePieceT;
-    sf::Texture blackKingT;
+    sf::Texture blackKingRandT;
+    sf::Texture blackKingBeginnerT;
+    sf::Texture blackKingGrandmasterT;
     sf::Texture whiteKingT;
 
     static Assets& Instance()
